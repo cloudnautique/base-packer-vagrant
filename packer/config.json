@@ -1,0 +1,23 @@
+{
+    "builders": [ {
+        "type": "virtualbox-iso",
+        "guest_os_type":"RedHat",
+        "iso_url": "http://mirrors.godaddy.com/centos/6.5/isos/i386/CentOS-6.5-i386-minimal.iso",
+        "iso_checksum":"a4f27ab51d0d2c9d36b68c56b39f752b",
+        "iso_checksum_type":"md5",
+        "ssh_username":"packer",
+        "ssh_password":"packer",
+        "ssh_wait_timeout":"600s",
+        "http_directory":"packer/ks",
+        "boot_wait": "3s",
+        "boot_command": [ "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+        ],
+        "shutdown_command":"echo 'packer' | sudo -S /sbin/shutdown -P now"
+    }],
+    "post-processors": [
+        {
+            "type":"vagrant",
+            "only": ["virtualbox-iso"]
+        }
+    ]
+}
